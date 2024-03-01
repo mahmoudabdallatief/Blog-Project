@@ -39,7 +39,8 @@
     @else
     @foreach($posts as $post)
         <div class="col-lg-3 col-md-6 col-sm-12 mb-3 res  " >
-            <div class="card h-100  {{ isset($_COOKIE['mode']) ? ($_COOKIE['mode'] === 'light' ? 'bg-light text-dark' : 'bg-dark text-light') : '' }}">
+            <div class="card card-theme h-100 ps-2 pt-2  {{ isset($_COOKIE['mode']) ? ($_COOKIE['mode'] === 'light' ? 'bg-light text-dark' : 'bg-dark text-light') : '' }}"  style="{{ isset($_COOKIE['mode']) ? ($_COOKIE['mode'] === 'light' ? 'border: 1px solid rgba(0, 0, 0, 0.125) !important;' : 'border: 1px solid #FFF !important;') : '' }}"
+>
             <a href="{{ route('single', ['id' => $post->id]) }}">
                 <span class="avatar w-100 avatar-xl mb-3 rounded" style="background-image: url(images/{{$post->featured_image}})"></span>
 </a>
@@ -93,7 +94,10 @@
     @endif
 </div>
 
-<div class="row mt-3 pag" role="navigation">
+<div class="row mt-3 pag " role="navigation">
+    <div class="" style="text-align:center !important;">
     {{ $posts->links('vendor.livewire.bootstrap') }}
+    </div>
+   
 </div>
 </div>

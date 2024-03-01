@@ -59,4 +59,7 @@ Route::middleware([App\Http\Middleware\AuthMiddleware::class])->group(function (
     Route::get('/{cat_id}', [PostController::class, 'index'])->name('{cat_id}');
     Route::get('/{tag}', [PostController::class, 'index'])->name('{tag}');
     Route::get('/single/{id}', [PostController::class, 'single'])->name('single');
+    // Route::post('/addcomment',[PostController::class,'addcomment'])->name('addcomment');
+    
+    // Route::post('/edit_comment',[PostController::class,'edit_comment'])->name('edit_comment');
 });

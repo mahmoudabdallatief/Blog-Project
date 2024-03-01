@@ -57,7 +57,7 @@
                 <div id="div_element" class="d-flex gap-1 mt-2 justify-content-start"></div>
                                 </div>
                                 <div class="block">
-                                <input type="hidden" id="currentTimestamp" name="currentTimestamp" value="">
+                                <input type="hidden" class="currentTimestamp" name="currentTimestamp" value="">
                                 <button class ="btn btn-primary" type="submit">Save post</button>
                                 </div>
                                 

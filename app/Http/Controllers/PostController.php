@@ -9,6 +9,7 @@ use App\Models\SubCategory;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Comment;
 
 class PostController extends Controller
 {
@@ -89,6 +90,9 @@ class PostController extends Controller
     ->limit(3)
     ->orderBy('id','desc')
     ->get();
+
+    
+    
     return view('back.pages.single', compact('post', 'randoms', 'subs', 'posts','posts1'));
     }
 
@@ -102,6 +106,8 @@ class PostController extends Controller
             $category = $request->input('category');
             $featured_image = $request-> file('featured_image');
             $tags = $request->input('tags');
+
+          
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'content' => 'required',
@@ -129,6 +135,55 @@ class PostController extends Controller
             return redirect()->route('allposts')->with('success','The post has been added successfully');
 
     }
+    public function addcomment(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            
+            'content' => 'required',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        $author_id = session('log');
+        $postId = $request->input('post_id');
+        $parentId = $request->input('parent_id');
+        $content = $request->input('content');
+    $reply_id =null;
+    $created_at =  $request->input('currentTimestamp');
+        Comment::create([
+            'post_id' => $postId,
+            'parent_id' => $parentId,
+            'content' => $content,
+            'author_id'=>$author_id,
+            'reply_id'=>$reply_id,
+            'created_at'=>$created_at,
+            'updated_at' =>null
+        ]);
+    
+    }
+
+    public function edit_comment (Request $request){
+        $validator = Validator::make($request->all(), [
+            
+            'content_of_comment' => 'required',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        
+        $content = $request->input('content_of_comment');
+        $updated_at =  $request->input('currentTimestamp');
+        $id = $request->input('id');
+        DB::table('comments')->where('id',$id)->update([
+            'content'=>$content,
+            'updated_at'=>$updated_at,
+
+        ]);
+        return response()->json(2);
+    }
+
     public function editpost($id){
         $post = Post::findOrFail($id);
         $subs = SubCategory::all();

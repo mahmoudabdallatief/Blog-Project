@@ -41,13 +41,23 @@ $mysqlTimestamp = strtotime($post->created_at);
                             @endforeach
                 </div>
         </div>
+        
+        <div class="row">
+        @livewire('comments', ['postId' => $post->id])
+        <livewire:scripts />
+        </div>
+       
         <div class="row">
             <br>
             <h2>Related Posts</h2>
             @foreach($posts as $post)
-            <div class="col-md-12 my-5">
+            <div class="col-md-12 mb-5 mt-2">
+            <div class="card">
             <div class="row">
                 <div class="col-md-4">
+                    
+                        
+                  
                 <a href="{{ route('single', ['id' => $post->id]) }}">
             <img src="images/{{$post->featured_image}}" class="  mb-3 " height="200" width="200" alt="" title ="{{$post->post_title}}">
 </a>
@@ -60,6 +70,7 @@ $mysqlTimestamp = strtotime($post->created_at);
             </div>
             
         </div>
+            </div>
             </div>
             @endforeach
         </div>
@@ -88,10 +99,10 @@ $mysqlTimestamp = strtotime($post->created_at);
             @foreach($subs as $sub)
                <div class="col-lg-4 col-md-d col-sm-12  ">
                 
-                <div class=" card bg-transparent mb-2 rounded-2 w-100" style="border:none !important">
+                
                 <a href="{{ route('index', ['cat_id' => $sub->id]) }}" class="h4  btn btn-secondary">{{$sub->subcategory_name}} ( {{$sub->post->count()}} )</a>
                 
-               </div>
+            
 </div>
             @endforeach
             </div>
@@ -121,9 +132,9 @@ sort($uniqueTags);
 
 @foreach ($uniqueTags as $tag)
     <div class="col-lg-4 col-md-d col-sm-12  ">
-        <div class=" card bg-transparent mb-2 rounded-2 w-100" style="border:none !important">
+
             <a href="{{ route('index', ['tag' =>$tag] ) }}" class="h4  btn btn-secondary">{{$tag}}</a>
-        </div>
+        
     </div>
 @endforeach
 

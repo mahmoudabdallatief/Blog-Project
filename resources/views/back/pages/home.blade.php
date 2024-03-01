@@ -140,10 +140,10 @@
             @foreach($subs as $sub)
                <div class="col-lg-4 col-md-d col-sm-12  ">
                 
-                <div class=" card bg-transparent mb-2 rounded-2 w-100" style="border:none !important">
+                
                 <a href="{{ route('index', ['cat_id' => $sub->id]) }}" class="h4  btn btn-secondary">{{$sub->subcategory_name}} ( {{$sub->post->count()}} )</a>
                 
-               </div>
+               
 </div>
             @endforeach
             </div>

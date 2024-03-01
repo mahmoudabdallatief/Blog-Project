@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
-
+use App\Mail\SendEmail;
 class AuthorController extends Controller
 {
     public function index(){
@@ -30,26 +30,29 @@ class AuthorController extends Controller
         return view('back.pages.auth.login', ['setting'=>$setting]);
     }
 
+public function login_form(Request $request)
+{
+    $email = $request->email;
+    $password = $request->password;
 
-    public function login_form(Request $request)
-    {
-        $email = $request->email;
-        $password = md5($request->password);
+    $validator = Validator::make($request->all(), [
+        'email' => 'required',
+        'password' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+        return redirect()->route('login')->withErrors($validator)->withInput();
+    }
+
+    $user = User::where(function ($query) use ($email) {
+        $query->where('email', $email)
+              ->orWhere('username', $email);
+    })
+    ->where('password', md5($password))
+    ->first();
     
-        $validator = Validator::make($request->all(), [
-            'email' => 'required',
-            'password' => 'required',
-        ]);
-    
-        if ($validator->fails()) {
-            return redirect()->route('login')->withErrors($validator)->withInput();
-        }
-    
-        $user = User::where('email', $email)
-            ->orWhere('username', $email)
-            ->where('password', $password)
-            ->first();
-    
+
+        
         if (!$user && filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
             return redirect()->route('login')->with('failed', 'E-mail or Password is not correct');
         }
@@ -58,11 +61,11 @@ class AuthorController extends Controller
         }
         if ($user->blocked == 1) {
             return redirect()->route('login')->with('failed', 'This account is blocked');
-        } else {
+        } if($user) {
             session()->put('log', $user->id);
             return redirect()->route('index');
         }
-    }
+}
     
     public function forgot_password(){
         if(session('log')){
@@ -98,11 +101,10 @@ class AuthorController extends Controller
 
         ]);
 
-        // Mail::send('back.pages.auth.forgot', ['token' => $token], function ($message) use ($email) {
-        //     $message->to($email);
-        //     $message->subject('Reset Password');
-        // });
+  
+        $template = 'emails.send';
 
+        Mail::to($email)->send(new SendEmail('Reset Password', $email, $template,$token));
         return redirect()->route('reset-form',['token'=>$token])->with('success', 'We have sent you an e-mail with instructions to reset your password');
     }
 

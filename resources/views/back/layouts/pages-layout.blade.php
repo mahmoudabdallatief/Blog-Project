@@ -21,6 +21,7 @@
                   <link rel="icon" type="image/x-icon" href="images/{{$setting->logo}}">
     <base href="/">
     <!-- CSS files -->
+    <!-- <link rel="stylesheet" href="{{ asset('vendor/livewire/livewire.css') }}"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="back/dist/css/tabler.min.css?1684106062" rel="stylesheet"/>
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />  
@@ -44,7 +45,7 @@
   #myFileInput {
     display: none;
   }
-
+  
   /* Style the custom button */
   .file-input-button {
     display: inline-block;
@@ -56,10 +57,69 @@
     top:0 ;
     left:0;
     width:fit-content;
-  
-
   }
 
+  .comment {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.replies {
+  margin-left: 20px;
+}
+
+.comment p {
+  margin-bottom: 10px;
+}
+
+.comment .block {
+  display: flex;
+  align-items: center;
+}
+
+.comment .block button {
+  margin-right: 10px;
+}
+
+
+
+@media (max-width: 576px) {
+  .comment {
+    padding: 5px;
+  }
+  
+  .replies {
+    margin-left: 10px;
+  }
+  
+  .comment p {
+    margin-bottom: 5px;
+  }
+  
+  .comment .block button {
+    margin-right: 5px;
+  }
+  
+  
+}
+.container {
+    overflow: hidden;
+   
+  }
+  .replies .card {
+    width: calc(100% - 20px) !important;
+  }
+
+@if(isset($_COOKIE['mode']) && ($_COOKIE['mode'] === 'dark'))
+.card{
+  border:1px solid #fff !important;
+}
+@else
+.card{
+  border:1px solid rgba(0, 0, 0, 0.125) !important;
+}
+@endif
     </style>
     
   </head>
@@ -82,11 +142,16 @@
       </div>
     </div>
     <!-- Libs JS -->
+    @if(request()->routeIs('single') )
+
+    @else
     <script src="//js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
     <script type="text/javascript">bkLib.onDomLoaded(nicEditors.allTextAreas);</script>
+    @endif
+ 
     <script src="back/dist/libs/apexcharts/dist/apexcharts.min.js?1684106062" defer></script>
     
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js" integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.js" integrity="sha512-6Hh5t357FBmgv+xCBoaF9Gbk6sEF00WCH5wC8R1uieSL1R4pN2HFZx/cyE/TdfW+dxtOBWcHF1ZYdV8XLbpprA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Tabler Core -->

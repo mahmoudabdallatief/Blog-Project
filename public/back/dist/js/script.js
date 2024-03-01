@@ -3,6 +3,9 @@ $(document).ready(function(){
   $('input:not([type="file"]):not([type="radio"]):not([type="checkbox"])').addClass('tag');
 
   $(".btn-close").html('<i class="fa-solid fa-xmark fa-2x"></i>')
+  $(".card").addClass('card-theme')
+  $(".card-theme").addClass('ps-2 pt-2')
+ 
   var mode = localStorage.getItem('mode');
 
   // Apply initial mode
@@ -28,7 +31,7 @@ $(document).ready(function(){
       $(".btn-close").html('<i class="fa-solid fa-xmark fa-2x"></i>')
       $('.toggle-btn').html('<i class="fa-solid fa-lightbulb text-light"></i>')
       $('.toggle-btn').attr('title','Enable light Mode')
-     
+      $(".card-theme").attr('style',' border:1px solid #fff !important;')
     } else {
       enableLightMode();
       mode = 'light';
@@ -38,7 +41,7 @@ $(document).ready(function(){
       $(".btn-close").html('<i class="fa-solid fa-xmark fa-2x"></i>')
       $('.toggle-btn').html('<i class="fa-solid fa-moon "></i>')
       $('.toggle-btn').attr('title','Enable dark Mode')
-   
+      $(".card-theme").attr('style',' border:1px solid rgba(0, 0, 0, 0.125) !important;')
       
     }
   });
@@ -47,26 +50,26 @@ $(document).ready(function(){
     
      // Function to enable dark mode
      function enableDarkMode() {
-      $('body, header, select, table, .tag, .modal-content, .modal-footer, .container, .card, .dropdown-menu, .nav,.navbar-toggler')
+      $('body, header, select, table, .tag, .modal-content,textarea, .modal-footer, .container, .card, .dropdown-menu, .nav,.navbar-toggler')
         .removeClass('bg-light text-dark')
         .addClass('bg-dark text-light');
     
       // Set the background color of the close button using the `css()` method
       $('.btn-close').addClass('btn btn-dark text-light');
-    
       $(".nav-link-title").removeClass('text-dark').addClass('text-light');
-    
+      $(".card-theme").attr('style',' border:1px solid #fff !important;')
       localStorage.setItem('mode', 'dark');
     }
     
      // Function to enable light mode
      function enableLightMode() {
-       $('body, header, select, table, .tag, .modal-content, .modal-footer, .container, .card, .dropdown-menu, .nav,.navbar-toggler')
+       $('body, header, select, table, .tag, .modal-content,textarea, .modal-footer, .container, .card, .dropdown-menu, .nav,.navbar-toggler')
          .removeClass('bg-dark text-light')
          .addClass('bg-light text-dark');
      
        $(".nav-link-title").removeClass('text-light').addClass('text-dark');
        $('.btn-close').removeClass('btn btn-dark text-light');
+       $(".card-theme").attr('style',' border:1px solid rgba(0, 0, 0, 0.125) !important;')
        localStorage.setItem('mode', 'light');
      }
 
@@ -82,7 +85,25 @@ function getCurrentTimestamp() {
   
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
-document.getElementById('currentTimestamp').value = getCurrentTimestamp();
+$(".currentTimestamp").val(getCurrentTimestamp())
+
+window.addEventListener('close-modal', event => {
+
+  $('.modal').modal('hide');
+
+// $(".form-container").load(location.href + "  .edit_comment")
+
+})
+
+
+
+$(".paragraph-comment").each(function() {
+  var commentHtml = $(this).html();
+  $(".paragraph-content").html(function(index, oldHtml) {
+    return oldHtml + commentHtml;
+  });
+});
+
 
 //image display
 
@@ -500,10 +521,17 @@ $(document).on('submit', '.myFormsub', function(event) {
     }
   });
 });
+//comments
+
+
+
+
+
 
 $(document).on('click', '.btn-del', function() {
-  $('.success').html('<div class="alert  alert-success">The post has been deleted successfully</div>');
+  $('.success').html('<div class="alert ss alert-success">The post has been deleted successfully</div>');
 });
+
 
 var inputField = $('.tags');
 
