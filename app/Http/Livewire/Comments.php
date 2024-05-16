@@ -11,7 +11,7 @@ class Comments extends Component
     public $comments = [];
     public $content ='';
     public $parentId ; 
-    public $replyId ;
+    public $reply_Id ;
   
   
     
@@ -31,17 +31,13 @@ class Comments extends Component
 
         $comments = Comment::with('replies','user','reply_to')->where('post_id',$this->postId)->whereNull('parent_id')->whereNull('reply_id')->orderBy('id','desc')->get();
 
-        $this->comments = $comments->map(function ($comment) {
-            $commentArray = $comment->toArray();
-            $commentArray['replies'] = $comment->replies->toArray();
-            $commentArray['user'] = $comment->user ;
-            $commentArray['reply_to'] = $comment->reply_to ? $comment->reply_to->toArray() : null; // Handle null reply_to
-            return $commentArray;
-        });
+        $this->comments = $comments;
+            return  $this->comments;
+        
         // $this->id = $this->comments['id'];
     }
 
-    public function createComment($parent,$reply)
+    public function createComment()
     {
         $timezone = new DateTimeZone('Africa/Cairo');
         $currentTimestamp = (new DateTime('now', $timezone))->format('Y-m-d H:i:s');
@@ -57,8 +53,8 @@ class Comments extends Component
             'post_id' => $this->postId,
             'author_id' => session('log'), // Assuming user authentication
             'content' => $this->content,
-            'parent_id' => $parent, // Use parent_id if provided
-            'reply_id' => $reply,
+            'parent_id' => $this->parentId, // Use parent_id if provided
+            'reply_id' => $this->reply_Id,
             'created_at'=>$currentTimestamp,
             'updated_at'=> null // Use reply_id for replies
         ]);

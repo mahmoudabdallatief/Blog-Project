@@ -1,4 +1,4 @@
-<<div class="col-12 w-100  child">
+<div class="col-12 w-100  child">
 
 @if($comment['updated_at']===NULL)
 @php
@@ -17,7 +17,8 @@ $mysqlTimestamp = strtotime($comment['updated_at']);
 
     <div class="comment card {{ isset($_COOKIE['mode']) ? ($_COOKIE['mode'] === 'light' ? 'bg-light text-dark' : 'bg-dark text-light') : '' }} w-100 mb-5">
         <h2><b>{{$comment['user']['name']}}</b><span class="text-warning ms-2">({{$dateWithDayName}})</span></h2>
-        <p>{{ $comment['content'] }}</p> <span class="text-info">reply to{{$comment['reply_to']['name']}}</span>
+        <span class="text-primary mb-2">Reply to <b class="text-secondary fs-bold">{{$comment['reply_to']['name']}}</b></span>
+        <p>{{ $comment['content'] }}</p> 
        
         <div class="d-flex mb-2">
             <div class="block">
@@ -150,7 +151,7 @@ $mysqlTimestamp = strtotime($comment['updated_at']);
                 
                 @foreach ($comment['replies'] as $reply)
               
-                    @include('comment', ['comment' => $reply])
+                    @include('livewire.comment', ['comment' => $reply])
                 @endforeach
                    
                    
@@ -158,3 +159,4 @@ $mysqlTimestamp = strtotime($comment['updated_at']);
                 
             </div>
         @endif
+</div>
